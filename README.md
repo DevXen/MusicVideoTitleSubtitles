@@ -1,4 +1,5 @@
 # Music Video Title Subtitle Generator
+#### Version 1.0
 
 ### Description:
 MusicVideoTitleSubtitles is a command-line program that creates subtitle files for video files in a specified directory. Subtitles are generated with the video file name and can be positioned at the start, end, or both ends of the video file. The program uses FFmpeg to get the duration of the video file and generate the subtitle file. The subtitle file is saved in the same directory as the video file with the same name and a ".srt" extension.
