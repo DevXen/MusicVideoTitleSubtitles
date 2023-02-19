@@ -37,6 +37,7 @@ Use user prompts to search for video files and generate subtitles with 20 second
 
 python music_video_subtitle_generator.py -t 20
 
+
 Use user prompts to search for video files and generate subtitles with 20 seconds display time and show only at the end of the video:
 
 python music_video_subtitle_generator.py -t 20 -p end
