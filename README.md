@@ -24,11 +24,11 @@ If the user does not provide command line arguments, the program will prompt the
 
 | Short | Long | Description |
 | --- | --- | --- |
-| -h | --help | Show the help file, and command line arguments and exit. |
-| -d | --directory | Specify the directory path where video files are located. If not specified, the current working directory will be used. If the directory path contains spaces, it should be enclosed in quotes. |
-| -s | --subdirs | Optional flag to scan subdirectories for video files. If specified, the program will search for video files in all subdirectories of the specified directory. |
-| -t | --time | Optional argument to specify the subtitle display time in seconds or 'full'. If not specified, the default subtitle display time is 10 seconds. If 'full' is specified, the subtitle will be displayed for the full duration of the video file.  |
-| -p | --position | Optional argument to specify the subtitle position. The options are 'start', 'end', or 'both'. If not specified, the default subtitle position is 'both'. |
+| `-h` | `--help` | Show the help file, and command line arguments and exit. |
+| `-d` | `--directory` | Specify the directory path where video files are located. If not specified, the current working directory will be used. If the directory path contains spaces, it should be enclosed in quotes. |
+| `-s` | `--subdirs` | Optional flag to scan subdirectories for video files. If specified, the program will search for video files in all subdirectories of the specified directory. |
+| `-t` | `--time` | Optional argument to specify the subtitle display time in seconds or 'full'. If not specified, the default subtitle display time is 10 seconds. If 'full' is specified, the subtitle will be displayed for the full duration of the video file.  |
+| `-p` | `--position` | Optional argument to specify the subtitle position. The options are 'start', 'end', or 'both'. If not specified, the default subtitle position is 'both'. |
 
 ### Command line argument examples
 
