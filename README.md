@@ -10,7 +10,7 @@ MusicVideoTitleSubtitles is a command-line program that creates subtitle files f
 * ffprobe executable (part of [FFmpeg](https://ffmpeg.org/)) in your system's PATH.
 
 ### Usage:
-`python MusicVideoSubtitleGenerator.py [-h] [-d DIRECTORY] [-s] [-t TIME] [-p POSITION]`
+`python MusicVideoSubtitleGenerator.py [-h] [-d DIRECTORY] [-s] [-t TIME] [-p POSITION] [-r] [-df]`
 
 * The program requires a directory path to scan for video files. The user can provide the directory path as a command line argument or through a prompt. Additional options can be set through command line arguments or prompts.
 * For any options not set, it will ask you for them when the program is run.
@@ -30,6 +30,8 @@ If the user does not provide command line arguments, the program will prompt the
 | `-s` | `--subdirs` | Optional flag to scan subdirectories for video files. If specified, the program will search for video files in all subdirectories of the specified directory. |
 | `-t` | `--time` | Optional argument to specify the subtitle display time in seconds or 'full'. If not specified, the default subtitle display time is 10 seconds. If 'full' is specified, the subtitle will be displayed for the full duration of the video file.  |
 | `-p` | `--position` | Optional argument to specify the subtitle position. The options are 'start', 'end', or 'both'. If not specified, the default subtitle position is 'both'. |
+| `-r` | `--remove` | Optional argument to remove all the existing .srt files before creating new ones. |
+| `-df` | `--default` | Optional argument to bypass all the options and use the default values. |
 
 ### Command line argument examples
 
