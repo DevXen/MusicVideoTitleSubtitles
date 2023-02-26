@@ -1,25 +1,12 @@
-# Version 1.6
+# Version 1.5
 
 import os
 import subprocess
 import argparse
 import logging
 
-# create logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-# create a file handler
-handler = logging.FileHandler('MusicVideoTitleSubtitles.log', encoding='utf-8')
-handler.setLevel(logging.INFO)
-
-# create a logging format
-formatter = logging.Formatter('%(asctime)s.%(msecs)03d - %(message)s', datefmt='%m-%d-%Y %H:%M:%S')
-handler.setFormatter(formatter)
-
-# add the handlers to the logger
-logger.addHandler(handler)
-
+# initialize logging
+logging.basicConfig(filename='MusicVideoTitleSubtitles.log',level=logging.INFO,format='%(asctime)s.%(msecs)03d - %(message)s',datefmt='%m-%d-%Y %H:%M:%S',)
 width = os.get_terminal_size().columns
 linewidth = width/2 % 2
 is_divisible = linewidth == 0
@@ -81,11 +68,12 @@ if args.remove:
                 # remove existing subtitle file
                 os.remove(os.path.join(dirpath, filename))
                 if deleted_count == 1:
-                    justaplaceholder="here"
+                    test=1
                 else:
                     print("\033[1;91m " + '-' * (width-2) + "\033[0;0m")
                 print(f"\033[1;90m| \033[0;0m\033[91mDELETED\033[1;90m: {filename}\033[1;90m" + " " * (width-(len(filename))-12) + "|\033[0;0m")
-                logger.info(f"DELETED: {srt_filename}" + "\n" + " " + "-" * 198)
+                #print("\033[1;90m " + '-' * (width-2) + "\033[0;0m")
+                logging.warning(f"DELETED: {srt_filename}" + "\n" + " " + "-" * 198)
     print("\033[1;90m " + '=' * (width-2) + "\033[0;0m")
 # loop through files in directory (and subdirectories if selected)
 
@@ -109,7 +97,7 @@ for dirpath, dirnames, filenames in os.walk(directory):
                 else: 
                     print("\033[1;93m " + '-' * (width-2) + "\033[0;0m")
                 print(f"\033[1;90m| \033[0;0m\033[93mSKIPPING:\033[1;90m {subtitle_filename} " + " " * (width-(len(subtitle_filename))-14) + "|\033[0;0m")
-                logger.info(f"SKIPPING: {srt_filename} (Already Exists)" + "\n" + " " + "-" * 198)
+                logging.warning(f"SKIPPING: {srt_filename} (Already Exists)" + "\n" + " " + "-" * 198)
                 continue
 
             # get video duration using ffprobe
@@ -147,7 +135,7 @@ for dirpath, dirnames, filenames in os.walk(directory):
                 print("\033[0;36m " + '-' * (width-2) + "\033[0;0m")			
             print(f"\033[1;90m| \033[0;0m\033[36mCREATED\033[1;90m: {subtitle_filename}\033[1;90m" + " " * (width-(len(subtitle_filename))-12) + "|\033[0;0m")
 
-            logger.info(f"CREATED: {srt_filename}" + "\n" + " " + "-" * 198)
+            logging.warning(f"CREATED: {srt_filename}" + "\n" + " " + "-" * 198)
 
 
 
