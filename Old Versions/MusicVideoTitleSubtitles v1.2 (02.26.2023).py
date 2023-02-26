@@ -1,4 +1,4 @@
-# Version 1.5
+# Version 1.2
 
 import os
 import subprocess
@@ -8,19 +8,6 @@ import logging
 # initialize logging
 logging.basicConfig(filename='MusicVideoTitleSubtitles.log',level=logging.INFO,format='%(asctime)s.%(msecs)03d - %(message)s',datefmt='%m-%d-%Y %H:%M:%S',)
 width = os.get_terminal_size().columns
-linewidth = width/2 % 2
-is_divisible = linewidth == 0
-if is_divisible:
-    alignlinenum = 0
-    titlelinenum = 0
-else:
-    alignlinenum = 1
-    titlelinenum = -3
-
-
-created_count = 0
-deleted_count = 0
-skipped_count = 0
 
 # function to convert time in seconds to subtitle timestamp format
 def to_timestamp(seconds):
@@ -52,29 +39,19 @@ subtitle_position = 'start' if subtitle_position in ['s', 'start'] else 'end' if
 
 # remove existing subtitle files if requested
 if args.remove:
-    print("\n\n\033[1;90m " + '=' * (width-2) + "\033[0;0m")
-    print("\033[1;90m|" + " " * (width//2-8) + "\033[0;0m\033[91mDELETING FILES:\033[1;90m" + " " * (width//2-9+alignlinenum) + "|\033[0;0m")
-    print("\033[1;90m|" + " " * (width//2-9) + "=================" + " " * (width//2-10+alignlinenum) + "|\033[0;0m")
-    print("\033[1;90m| " + ' ' * (width-3) + "|\033[0;0m")
-    
     for dirpath, dirnames, filenames in os.walk(directory):
         for filename in filenames:
             filepath = os.path.join(dirpath, filename)
             srt_filename = os.path.splitext(filepath)[0] + ".srt"
+
             # check if file is a subtitle file
             ext = os.path.splitext(filename)[1].lower()
             if ext == ".srt":
-                deleted_count += 1
                 # remove existing subtitle file
                 os.remove(os.path.join(dirpath, filename))
-                if deleted_count == 1:
-                    test=1
-                else:
-                    print("\033[1;91m " + '-' * (width-2) + "\033[0;0m")
-                print(f"\033[1;90m| \033[0;0m\033[91mDELETED\033[1;90m: {filename}\033[1;90m" + " " * (width-(len(filename))-12) + "|\033[0;0m")
-                #print("\033[1;90m " + '-' * (width-2) + "\033[0;0m")
+                print(f"\033[91mDELETED: {filename}\033[0;0m")
+                print("\033[1;90m " + '-' * (width-2) + "\033[0;0m")
                 logging.warning(f"DELETED: {srt_filename}" + "\n" + " " + "-" * 198)
-    print("\033[1;90m " + '=' * (width-2) + "\033[0;0m")
 # loop through files in directory (and subdirectories if selected)
 
 for dirpath, dirnames, filenames in os.walk(directory):
@@ -84,19 +61,13 @@ for dirpath, dirnames, filenames in os.walk(directory):
         if ext in (".mp4", ".avi", ".mkv", ".mov", ".wmv", ".flv"):
             # generate subtitle file name
             subtitle_filename = os.path.splitext(filename)[0] + ".srt"
+
             # check if subtitle file already exists, and skip creating it if it does
             if os.path.exists(os.path.join(dirpath, subtitle_filename)):
                 filepath = os.path.join(dirpath, filename)
                 srt_filename = os.path.splitext(filepath)[0] + ".srt"
-                skipped_count += 1
-                if skipped_count == 1:
-                    print("\n\n\033[1;90m " + '=' * (width-2) + "\033[0;0m")
-                    print("\033[1;90m|" + " " * (width//2-8) + "\033[0;0m\033[93mSKIPPING FILES\033[90m:" + " " * (width//2-9+alignlinenum) + "|\033[0;0m")
-                    print("\033[1;90m|" + " " * (width//2-9) + "=================" + " " * (width//2-10+alignlinenum) + "|\033[0;0m")
-                    print("\033[1;90m| " + ' ' * (width-3) + "|\033[0;0m")
-                else: 
-                    print("\033[1;93m " + '-' * (width-2) + "\033[0;0m")
-                print(f"\033[1;90m| \033[0;0m\033[93mSKIPPING:\033[1;90m {subtitle_filename} " + " " * (width-(len(subtitle_filename))-14) + "|\033[0;0m")
+                print(f"\033[95mSKIPPING: {filename} (Already Exists.)\033[0;0m")
+                print("\033[1;90m " + '-' * (width-2) + "\033[0;0m")
                 logging.warning(f"SKIPPING: {srt_filename} (Already Exists)" + "\n" + " " + "-" * 198)
                 continue
 
@@ -105,7 +76,7 @@ for dirpath, dirnames, filenames in os.walk(directory):
                        "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", os.path.join(dirpath, filename)]
             result = subprocess.run(command, capture_output=True, text=True)
             duration = float(result.stdout.strip())
-			
+
             # create subtitle file
             with open(os.path.join(dirpath, subtitle_filename), "w", encoding='utf-8') as f:
                 f.write("1\n")
@@ -123,27 +94,11 @@ for dirpath, dirnames, filenames in os.walk(directory):
 
             filepath = os.path.join(dirpath, filename)
             srt_filename = os.path.splitext(filepath)[0] + ".srt"
-            created_count += 1
-            if created_count == 1:
-                width = os.get_terminal_size().columns
-                print("\n\n\033[1;90m " + '=' * (width-2) + "\033[0;0m")
-                print("\033[1;90m|" + " " * (width//2-8) + "\033[0;0m\033[36mCREATING FILES:\033[1;90m" + " " * (width//2-9+alignlinenum) + "|\033[0;0m")
-                print("\033[1;90m|" + " " * (width//2-9) + "=================" + " " * (width//2-10+alignlinenum) + "|\033[0;0m")
-                print("\033[1;90m| " + ' ' * (width-3) + "|\033[0;0m")
 
-            else:
-                print("\033[0;36m " + '-' * (width-2) + "\033[0;0m")			
-            print(f"\033[1;90m| \033[0;0m\033[36mCREATED\033[1;90m: {subtitle_filename}\033[1;90m" + " " * (width-(len(subtitle_filename))-12) + "|\033[0;0m")
-
+            print(f"\033[36mCREATED: {subtitle_filename}")
+            print("\033[1;90m " + '-' * (width-2) + "\033[0;0m")
             logging.warning(f"CREATED: {srt_filename}" + "\n" + " " + "-" * 198)
 
-
-
-print("\033[1;90m " + '=' * (width-2) + "\033[0;0m")
-print("\n\n\n\033[1;90m " + '=' * (width-2) + "\033[0;0m")
-print("\033[1;90m|" + " " * (width//2-6) + "\033[0;0m\033[36mFILE STATS:\033[1;90m" + " " * (width//2-7+alignlinenum) + "|\033[0;0m")
-print("\033[1;90m|" + " " * (width//2-7) + "=============" + " " * (width//2-8+alignlinenum) + "|\033[0;0m")
-print("\033[1;90m| " + ' ' * (width-3) + "|\033[0;0m")
-print(f"\033[1;90m|" + ' ' * (width//2-40) + f" \033[0;0m\033[36m{created_count} \033[1;90mSubtitle Files \033[0;36mCreated.\033[1;90m |\033[93m {skipped_count} \033[1;90mSubtitle files \033[0;93mskipped.\033[1;90m |\033[91m {deleted_count} \033[1;90mSubtitle Files \033[0;91mDeleted.\033[1;90m" + " " * (width//2-41-(len(str(created_count)))-(len(str(skipped_count)))-(len(str(deleted_count)))+alignlinenum) +"|\033[0;0m")
-print("\033[1;90m " + '=' * (width-2) + "\033[0;0m")
-
+    # check if scan subdirectories option is selected
+    if not scan_subdirs:
+        break
