@@ -1,4 +1,4 @@
-# Version 1.7
+# Version 1.6
 
 import os
 import subprocess
@@ -52,16 +52,9 @@ parser.add_argument('-df', '--default', action='store_true', help='skip user pro
 args = parser.parse_args()
 
 # set defaults
-directory = '.' if args.default else args.directory or input("Enter directory path [default is current directory]: ") or '.'
-scan_subdirs = True if args.subdirs or args.default else input("Scan subdirectories? [Y/n]: ").lower() in ['y', '']
-#subtitle_display_time = '10' if args.default else args.time or input("Enter subtitle display time in seconds, or 'full' [default is 10]: ").lower()
-if args.time:
-    subtitle_display_time = args.time
-else: 
-    subtitle_display_time = '10'
-
-subtitle_display_timews = '10' if args.default else args.time or input("Enter subtitle display time in seconds, or 'full' [default is 10]: ").lower()
-
+directory = '.' if args.default else args.directory or input("Enter directory path (default is current directory): ") or '.'
+scan_subdirs = True if args.subdirs or args.default else input("Scan subdirectories? (Y/n, default is Y): ").lower() in ['y', '']
+subtitle_display_time = 'full' if args.default else args.time or input("Enter subtitle display time in seconds, or 'full' (default is 10): ").lower()
 if subtitle_display_time not in ['f', 'full']:
     try:
         subtitle_display_time = int(subtitle_display_time)
